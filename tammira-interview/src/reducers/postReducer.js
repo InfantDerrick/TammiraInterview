@@ -12,13 +12,11 @@ export default function(state = initialState, action){
         ...state,
         items: action.data
       };
-      break;
     case NEW:
       return {
         ...state,
         item: action.data
       };
-    break;
     default:
       return state;
   }
