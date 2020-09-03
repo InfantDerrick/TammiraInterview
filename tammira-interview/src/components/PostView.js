@@ -5,21 +5,23 @@ import Container from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { fetchPosts } from '../actions/actions'
+
+
 
 class PostView extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      posts: []
+  componentWillMount(){
+    this.props.fetchPosts()
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.userPost){
+      this.props.posts.unshift(nextProps.userPost)
     }
   }
-  componentWillMount(){
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((response) => response.json())
-      .then((json) => this.setState({posts: json}));
-  }
   render() {
-    const postItems = this.state.posts.map(post => (
+    const postItems = this.props.posts.map(post => (
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey={post.id}>
           {post.title}
@@ -38,15 +40,18 @@ class PostView extends Component{
               </Accordion>
             </Col>
           </Row>
-          <Row className="justify-content-md-center">
-            <Col md = "auto">
-                <Button>Post!</Button>
-            </Col>
-          </Row>
-        </Container>
+      </Container>
 
     )
   }
 }
-
-export default PostView;
+PostView.propTypes = {
+   fetchPosts: PropTypes.func.isRequired,
+   posts: PropTypes.array.isRequired,
+   userPost: PropTypes.object.isRequired
+}
+const mapStateToProps = state => ({
+  posts: state.posts.items,
+  userPost: state.posts.item
+})
+export default connect(mapStateToProps, { fetchPosts })(PostView);
