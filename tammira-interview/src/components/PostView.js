@@ -33,6 +33,11 @@ class PostView extends Component{
     ))
     return(
       <Container>
+          <Row className="justify-content-md-center">
+            <Col md = "auto">
+              <h1>Welcome to: Posts!</h1>
+            </Col>
+          </Row>
           <Row>
             <Col md={{ span: 6, offset: 3 }}>
               <Accordion defaultActiveKey="0">
